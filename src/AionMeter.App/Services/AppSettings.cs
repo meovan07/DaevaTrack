@@ -83,8 +83,6 @@ public sealed class AppSettings
 
     // DaevaTrack: every economy feature sits behind this switch; off = behaves exactly like upstream.
     public bool EconomyTracking { get; set; }
-    public double KinahLeft { get; set; } = 80;
-    public double KinahTop { get; set; } = 100;
 
     // Hotkeys (modifier+key, parsed by HotkeyManager)
     public string HotkeyToggleOverlay { get; set; } = "Ctrl+Shift+D";

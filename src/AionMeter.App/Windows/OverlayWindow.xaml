@@ -312,8 +312,21 @@
                 </StackPanel>
             </Grid>
 
+            <!-- DaevaTrack: DPS / Kinah tabs, only while economy tracking is on -->
+            <StackPanel x:Name="TabStrip" Grid.Row="1" Orientation="Horizontal" Margin="-4,4,0,0" Visibility="Collapsed">
+                <RadioButton x:Name="DpsTab" Style="{StaticResource TabToggle}" IsChecked="True" Checked="Tab_Checked"
+                             Content="{Binding T.DpsTab}" />
+                <RadioButton x:Name="KinahTab" Style="{StaticResource TabToggle}" Checked="Tab_Checked"
+                             Content="{Binding T.KinahLabel}" />
+            </StackPanel>
+
+            <Grid x:Name="DpsView" Grid.Row="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
             <!-- Boss HP: a slim bar -->
-            <Grid Grid.Row="1" Height="16" Margin="0,5,0,0" Visibility="{Binding HasBoss, Converter={StaticResource VisibleIf}}">
+            <Grid Height="16" Margin="0,5,0,0" Visibility="{Binding HasBoss, Converter={StaticResource VisibleIf}}">
                 <Border CornerRadius="4" Background="#2A1418" />
                 <Border CornerRadius="4" Background="{StaticResource HpFill}" RenderTransformOrigin="0,0.5">
                     <Border.RenderTransform>
@@ -332,7 +345,7 @@
             </Grid>
 
             <!-- Party: the rows share their value column widths -->
-            <Grid Grid.Row="2" Margin="0,7,0,0" Grid.IsSharedSizeScope="True">
+            <Grid Grid.Row="1" Margin="0,7,0,0" Grid.IsSharedSizeScope="True">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="*" />
@@ -361,6 +374,33 @@
                 <TextBlock Grid.RowSpan="2" Text="{Binding T.EmptyParty}" FontSize="12"
                            Foreground="#6B7590" HorizontalAlignment="Center" VerticalAlignment="Center" TextWrapping="Wrap" TextAlignment="Center"
                            Visibility="{Binding HasData, Converter={StaticResource VisibleIf}, ConverterParameter=!}" />
+            </Grid>
+            </Grid>
+
+            <!-- DaevaTrack: Kinah balances the server last sent, and the change since the app started -->
+            <Grid x:Name="KinahView" Grid.Row="2" Margin="2,10,10,0" Visibility="Collapsed" Effect="{StaticResource TextShadow}"
+                  ToolTip="{Binding T.KinahTip}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" MinWidth="70" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <TextBlock Text="{Binding T.KinahLabel}" FontSize="13" Foreground="#A9B1C0" VerticalAlignment="Center" />
+                <TextBlock x:Name="KinahAmount" Grid.Column="1" FontFamily="{StaticResource NumberFont}" FontSize="16" FontWeight="SemiBold"
+                           Foreground="{StaticResource SelfGold}" HorizontalAlignment="Right" />
+                <TextBlock x:Name="KinahChange" Grid.Column="2" FontFamily="{StaticResource NumberFont}" FontSize="12"
+                           HorizontalAlignment="Right" VerticalAlignment="Center" />
+                <TextBlock Grid.Row="1" Text="{Binding T.BoundKinahLabel}" FontSize="13" Foreground="#A9B1C0" VerticalAlignment="Center"
+                           Margin="0,8,0,0" />
+                <TextBlock x:Name="BoundAmount" Grid.Row="1" Grid.Column="1" FontFamily="{StaticResource NumberFont}" FontSize="16"
+                           FontWeight="SemiBold" Foreground="#EEF0F5" HorizontalAlignment="Right" Margin="0,8,0,0" />
+                <TextBlock x:Name="BoundChange" Grid.Row="1" Grid.Column="2" FontFamily="{StaticResource NumberFont}" FontSize="12"
+                           HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,8,0,0" />
             </Grid>
 
             <!-- Footer -->

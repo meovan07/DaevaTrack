@@ -84,9 +84,53 @@ public partial class OverlayWindow : Window
 
     public nint Handle => _hwnd;
 
+    // ------------------------------------------------------------ DaevaTrack: Kinah tab
+
+    private static readonly Brush KinahUp = new SolidColorBrush(Color.FromRgb(0x7C, 0xCF, 0x8A));
+    private static readonly Brush KinahDown = new SolidColorBrush(Color.FromRgb(0xE0, 0x7A, 0x6E));
+    private int _kinahShown = -1;
+
+    /// <summary>The Kinah tab is open: the app keeps the overlay up out of combat.</summary>
+    public bool ShowingKinah => KinahView.Visibility == Visibility.Visible;
+
+    private void Tab_Checked(object sender, RoutedEventArgs e)
+    {
+        if (DpsView is null || KinahView is null) return; // during InitializeComponent
+        var kinah = KinahTab.IsChecked == true;
+        DpsView.Visibility = kinah ? Visibility.Collapsed : Visibility.Visible;
+        KinahView.Visibility = kinah ? Visibility.Visible : Visibility.Collapsed;
+    }
+
+    private void RefreshKinah()
+    {
+        var on = _settings.EconomyTracking;
+        TabStrip.Visibility = on ? Visibility.Visible : Visibility.Collapsed;
+        if (!on && KinahTab.IsChecked == true) DpsTab.IsChecked = true;
+        if (!ShowingKinah || _meter.Kinah.Version == _kinahShown) return;
+        _kinahShown = _meter.Kinah.Version;
+        ShowKinah(_meter.Kinah.Get(Core.Economy.Currency.Kinah), KinahAmount, KinahChange);
+        ShowKinah(_meter.Kinah.Get(Core.Economy.Currency.BoundKinah), BoundAmount, BoundChange);
+    }
+
+    private static void ShowKinah((long Amount, long Change)? value, TextBlock amount, TextBlock change)
+    {
+        if (value is not { } v)
+        {
+            amount.Text = UiText.Current.KinahWaiting;
+            amount.FontWeight = FontWeights.Normal;
+            change.Text = "";
+            return;
+        }
+        amount.Text = v.Amount.ToString("#,0");
+        amount.FontWeight = FontWeights.SemiBold;
+        change.Text = v.Change == 0 ? "" : v.Change.ToString("+#,0;-#,0");
+        change.Foreground = v.Change > 0 ? KinahUp : KinahDown;
+    }
+
     /// <summary>Called by the app's UI timer (≈5 Hz).</summary>
     public void Refresh()
     {
+        RefreshKinah();
         _vm.ShowGear = _settings.ShowGear;
         // Looking at an old fight when a new pull starts: jump back to live so the fight is never missed.
         if ((_saved is not null || _segment is not null) &&
