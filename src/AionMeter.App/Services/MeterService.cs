@@ -67,7 +67,8 @@ public sealed class MeterService : IDisposable
         {
             if (!_replaying && !DemoRunning) Timers.SetCurrentServer(Tracker.SelfServerId);
         };
-        // DaevaTrack: Kinah is per character.
+        // DaevaTrack: Kinah is per character (the one from the name cache until the game names it again).
+        if (Tracker.SelfName is { } cachedSelf) Kinah.SetCharacter(cachedSelf);
         Tracker.SelfIdentified += name =>
         {
             if (!_replaying && !DemoRunning) Kinah.SetCharacter(name);

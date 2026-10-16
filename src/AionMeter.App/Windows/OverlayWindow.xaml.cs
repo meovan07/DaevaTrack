@@ -109,6 +109,9 @@ public partial class OverlayWindow : Window
         if (!ShowingKinah || _meter.Kinah.Version == _kinahShown) return;
         _kinahShown = _meter.Kinah.Version;
         KinahCharacter.Text = _meter.Kinah.Character ?? UiText.Current.KinahNoCharacter;
+        var cls = _meter.Kinah.Character == _meter.Tracker.SelfName ? _meter.Tracker.SelfClass : Core.Events.GameClass.Unknown;
+        KinahClass.Class = cls;
+        KinahClass.Visibility = cls == Core.Events.GameClass.Unknown ? Visibility.Collapsed : Visibility.Visible;
         ShowKinah(_meter.Kinah.Get(Core.Economy.Currency.Kinah), KinahAmount, KinahChange);
         ShowKinah(_meter.Kinah.Get(Core.Economy.Currency.BoundKinah), BoundAmount, BoundChange);
         ShowKinah(_meter.Kinah.Get(Core.Economy.Currency.StorageKinah), StorageAmount, StorageChange, UiText.Current.StorageWaiting);

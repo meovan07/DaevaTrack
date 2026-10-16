@@ -38,6 +38,12 @@ public sealed class CombatTracker
         get { lock (_gate) return _entities.Self?.Name; }
     }
 
+    /// <summary>DaevaTrack: the local character's class (Unknown until known).</summary>
+    public GameClass SelfClass
+    {
+        get { lock (_gate) return _entities.Self?.Class ?? GameClass.Unknown; }
+    }
+
     public string? ZoneName
     {
         get { lock (_gate) return _entities.ZoneName; }
