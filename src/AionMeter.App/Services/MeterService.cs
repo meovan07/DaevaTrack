@@ -67,6 +67,11 @@ public sealed class MeterService : IDisposable
         {
             if (!_replaying && !DemoRunning) Timers.SetCurrentServer(Tracker.SelfServerId);
         };
+        // DaevaTrack: Kinah is per character.
+        Tracker.SelfIdentified += name =>
+        {
+            if (!_replaying && !DemoRunning) Kinah.SetCharacter(name);
+        };
     }
 
     public static string DataDirectory { get; } = Path.Combine(AppContext.BaseDirectory, "data");

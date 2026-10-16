@@ -108,6 +108,7 @@ public partial class OverlayWindow : Window
         if (!on && KinahTab.IsChecked == true) DpsTab.IsChecked = true;
         if (!ShowingKinah || _meter.Kinah.Version == _kinahShown) return;
         _kinahShown = _meter.Kinah.Version;
+        KinahCharacter.Text = _meter.Kinah.Character ?? UiText.Current.KinahNoCharacter;
         ShowKinah(_meter.Kinah.Get(Core.Economy.Currency.Kinah), KinahAmount, KinahChange);
         ShowKinah(_meter.Kinah.Get(Core.Economy.Currency.BoundKinah), BoundAmount, BoundChange);
     }

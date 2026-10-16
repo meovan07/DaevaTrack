@@ -45,7 +45,7 @@ public sealed class PacketParser
         if (Economy.KinahParser.Carries(opcode))
         {
             foreach (var (currency, amount) in Economy.KinahParser.Parse(body))
-                _sink(new Economy.KinahEvent(TimeMs, currency, amount));
+                _sink(new Economy.KinahEvent(TimeMs, currency, amount, opcode == Economy.KinahParser.Inventory));
             return;
         }
 

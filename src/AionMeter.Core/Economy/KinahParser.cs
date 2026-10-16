@@ -8,7 +8,9 @@ public enum Currency { Kinah, BoundKinah }
 public readonly record struct CurrencyBalance(Currency Currency, long Amount);
 
 /// <summary>A Kinah balance from the server; the combat engine ignores it.</summary>
-public sealed record KinahEvent(long TimeMs, Currency Currency, long Amount) : Events.GameEvent(TimeMs);
+/// <param name="FromInventory">From the full inventory sent on every map load, a few seconds <i>before</i> the
+/// character's own record (<c>SelfInfo</c>): it belongs to the character announced next, not the one before.</param>
+public sealed record KinahEvent(long TimeMs, Currency Currency, long Amount, bool FromInventory = false) : Events.GameEvent(TimeMs);
 
 /// <summary>
 /// DaevaTrack, milestone 1: Kinah from packet <c>1b 56</c>, the server's "these item stacks changed" message, and
