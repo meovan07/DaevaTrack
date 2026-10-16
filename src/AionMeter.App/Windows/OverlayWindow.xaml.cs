@@ -111,13 +111,14 @@ public partial class OverlayWindow : Window
         KinahCharacter.Text = _meter.Kinah.Character ?? UiText.Current.KinahNoCharacter;
         ShowKinah(_meter.Kinah.Get(Core.Economy.Currency.Kinah), KinahAmount, KinahChange);
         ShowKinah(_meter.Kinah.Get(Core.Economy.Currency.BoundKinah), BoundAmount, BoundChange);
+        ShowKinah(_meter.Kinah.Get(Core.Economy.Currency.StorageKinah), StorageAmount, StorageChange, UiText.Current.StorageWaiting);
     }
 
-    private static void ShowKinah((long Amount, long Change)? value, TextBlock amount, TextBlock change)
+    private static void ShowKinah((long Amount, long Change)? value, TextBlock amount, TextBlock change, string? waiting = null)
     {
         if (value is not { } v)
         {
-            amount.Text = UiText.Current.KinahWaiting;
+            amount.Text = waiting ?? UiText.Current.KinahWaiting;
             amount.FontWeight = FontWeights.Normal;
             change.Text = "";
             return;

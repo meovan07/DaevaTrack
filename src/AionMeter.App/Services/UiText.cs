@@ -336,6 +336,8 @@ public sealed class UiText
     public string KinahLabel { get; init; } = "Kinah";
     public string BoundKinahLabel { get; init; } = "Bound Kinah";
     public string KinahWaiting { get; init; } = "waiting for the game";
+    public string StorageKinahLabel { get; init; } = "Server storage";
+    public string StorageWaiting { get; init; } = "open the storage once";
     public string KinahNoCharacter { get; init; } = "Character not known yet: change zone or log in";
     public string KinahTip { get; init; } = "Kinah of the character you are playing, and its change since this app started. Shown after you log in, change zone or your Kinah changes.";
     public string StatusPrefix { get; init; } = "Status: ";
@@ -678,6 +680,8 @@ public sealed class UiText
         KinahLabel = "Кина",
         BoundKinahLabel = "Связанная кина",
         KinahWaiting = "ждём игру",
+        StorageKinahLabel = "Хранилище сервера",
+        StorageWaiting = "откройте хранилище",
         KinahNoCharacter = "Персонаж ещё не известен: смените зону или войдите в игру",
         KinahTip = "Кина персонажа, за которого вы играете, и её изменение с запуска программы. Появляется после входа, смены зоны или когда кина меняется.",
         StatusPrefix = "Статус: ",

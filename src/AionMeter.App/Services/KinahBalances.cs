@@ -27,7 +27,8 @@ public sealed class KinahBalances
     {
         lock (_gate)
         {
-            if (e.FromInventory || _character is null) _pending.Add(e);
+            if (e.Currency == Currency.StorageKinah) Apply("", e);
+            else if (e.FromInventory || _character is null) _pending.Add(e);
             else Apply(_character, e);
         }
     }
@@ -44,9 +45,12 @@ public sealed class KinahBalances
         }
     }
 
+    /// <summary>Server storage belongs to the account, not to one character.</summary>
+    private static string Owner(string? character, Currency currency) => currency == Currency.StorageKinah ? "" : character ?? "";
+
     private void Apply(string character, KinahEvent e)
     {
-        var key = (character, e.Currency);
+        var key = (Owner(character, e.Currency), e.Currency);
         _seen[key] = _seen.TryGetValue(key, out var v) ? (v.First, e.Amount) : (e.Amount, e.Amount);
         Version++;
     }
@@ -55,6 +59,9 @@ public sealed class KinahBalances
     public (long Amount, long Change)? Get(Currency currency)
     {
         lock (_gate)
-            return _character is not null && _seen.TryGetValue((_character, currency), out var v) ? (v.Now, v.Now - v.First) : null;
+            return (_character is not null || currency == Currency.StorageKinah) &&
+                   _seen.TryGetValue((Owner(_character, currency), currency), out var v)
+                ? (v.Now, v.Now - v.First)
+                : null;
     }
 }

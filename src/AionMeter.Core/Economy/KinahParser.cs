@@ -2,7 +2,8 @@ using System.Buffers.Binary;
 
 namespace AionMeter.Core.Economy;
 
-public enum Currency { Kinah, BoundKinah }
+/// <summary><see cref="StorageKinah"/> is unbound Kinah in the account's server storage, shared by its characters.</summary>
+public enum Currency { Kinah, BoundKinah, StorageKinah }
 
 /// <summary>A currency's new total, as the server sends it (absolute, never a delta).</summary>
 public readonly record struct CurrencyBalance(Currency Currency, long Amount);
@@ -31,6 +32,9 @@ public static class KinahParser
     public const uint KinahId = 0x3770333F;
     public const uint BoundKinahId = 0x37703321;
 
+    /// <summary>The byte after the amount says where the stack is: the character's bag, or the server storage.</summary>
+    private const byte InStorage = 0x02;
+
     /// <summary>More Kinah than this is not a balance but a false match.</summary>
     private const long MaxAmount = 1_000_000_000_000;
 
@@ -41,8 +45,9 @@ public static class KinahParser
         for (var i = 11; i + 12 <= body.Length; i++)
         {
             var id = BinaryPrimitives.ReadUInt32LittleEndian(body[i..]);
+            var stored = i + 12 < body.Length && body[i + 12] == InStorage;
             Currency currency;
-            if (id == KinahId) currency = Currency.Kinah;
+            if (id == KinahId) currency = stored ? Currency.StorageKinah : Currency.Kinah;
             else if (id == BoundKinahId) currency = Currency.BoundKinah;
             else continue;
             var amount = BinaryPrimitives.ReadInt64LittleEndian(body[(i + 4)..]);

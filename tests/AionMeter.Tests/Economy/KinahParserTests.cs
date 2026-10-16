@@ -48,6 +48,18 @@ public class KinahParserTests
     }
 
     [Fact]
+    public void Deposit_BagAndStorage()
+    {
+        // Deposited 1,000 into server storage: the bag's Kinah (location 01) and the storage's (location 02), same id.
+        var body = Wire.FromHex(
+            "02 0100 00000000 000a0100 3f337037 e124000000000000 0100000000000000000000000000000000190000" +
+            "00 0000 00000000 00f20000 3f337037 e803000000000000 0221000000000000000000000000000f0000");
+        Assert.Equal(
+            [new CurrencyBalance(Currency.Kinah, 9_441), new CurrencyBalance(Currency.StorageKinah, 1_000)],
+            KinahParser.Parse(body));
+    }
+
+    [Fact]
     public void OtherItems_NoKinah() =>
         Assert.Empty(KinahParser.Parse(Wire.FromHex("01 0100 00000000 00270100 4482f71d 0d00000000000000 00")));
 }

@@ -389,6 +389,7 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
                 <TextBlock x:Name="KinahCharacter" Grid.ColumnSpan="3" FontSize="13.5" FontWeight="SemiBold"
@@ -404,6 +405,14 @@
                            FontWeight="SemiBold" Foreground="#EEF0F5" HorizontalAlignment="Right" Margin="0,8,0,0" />
                 <TextBlock x:Name="BoundChange" Grid.Row="2" Grid.Column="2" FontFamily="{StaticResource NumberFont}" FontSize="12"
                            HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,8,0,0" />
+                <!-- Server storage: the account's, the same whichever character is played -->
+                <Border Grid.Row="3" Grid.ColumnSpan="3" Height="1" Background="#26FFFFFF" Margin="0,10,0,0" VerticalAlignment="Top" />
+                <TextBlock Grid.Row="3" Text="{Binding T.StorageKinahLabel}" FontSize="13" Foreground="#A9B1C0" VerticalAlignment="Center"
+                           Margin="0,19,0,0" />
+                <TextBlock x:Name="StorageAmount" Grid.Row="3" Grid.Column="1" FontFamily="{StaticResource NumberFont}" FontSize="16"
+                           FontWeight="SemiBold" Foreground="#EEF0F5" HorizontalAlignment="Right" Margin="0,19,0,0" />
+                <TextBlock x:Name="StorageChange" Grid.Row="3" Grid.Column="2" FontFamily="{StaticResource NumberFont}" FontSize="12"
+                           HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,19,0,0" />
             </Grid>
 
             <!-- Footer -->
