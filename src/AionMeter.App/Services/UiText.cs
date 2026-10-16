@@ -331,7 +331,11 @@ public sealed class UiText
     public string RecordHint { get; init; } = "Recordings contain your own game traffic only, including character names. Keep them private.";
     public string SecEconomy { get; init; } = "ECONOMY (DAEVATRACK)";
     public string EconomyTracking { get; init; } = "Economy tracking: kinah, Odyle Energy, claims, checklists";
-    public string EconomyHint { get; init; } = "Off: the app works exactly like the upstream DPS meter. Economy decoding is not built yet.";
+    public string EconomyHint { get; init; } = "Off: the app works exactly like the upstream DPS meter. On: a small Kinah window shows your balances (more to come).";
+    public string KinahLabel { get; init; } = "Kinah";
+    public string BoundKinahLabel { get; init; } = "Bound Kinah";
+    public string KinahWaiting { get; init; } = "waiting for the game";
+    public string KinahTip { get; init; } = "Kinah since this app started. Shown after you log in or your Kinah changes. Drag to move.";
     public string StatusPrefix { get; init; } = "Status: ";
     public string NpcapMissing { get; init; } = "Npcap not installed";
     public string NpcapNeeded { get; init; } =
@@ -668,7 +672,11 @@ public sealed class UiText
         RecordHint = "В записи только ваш игровой трафик, включая ники. Не публикуйте их.",
         SecEconomy = "ЭКОНОМИКА (DAEVATRACK)",
         EconomyTracking = "Учёт экономики: кина, энергия Одиллы, награды, чек-листы",
-        EconomyHint = "Выключено: программа работает в точности как исходный DPS-метр. Разбор экономики ещё не готов.",
+        EconomyHint = "Выключено: программа работает в точности как исходный DPS-метр. Включено: маленькое окно показывает вашу кину (дальше — больше).",
+        KinahLabel = "Кина",
+        BoundKinahLabel = "Связанная кина",
+        KinahWaiting = "ждём игру",
+        KinahTip = "Кина с запуска программы. Появляется после входа в игру или когда кина меняется. Перетащите, чтобы сдвинуть.",
         StatusPrefix = "Статус: ",
         NpcapMissing = "Npcap не установлен",
         NpcapNeeded =

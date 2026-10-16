@@ -114,7 +114,7 @@ static class EconomyCommands
         var replay = new PcapReplaySource(data, path, realtime: false);
         replay.Pipeline.Parser.Tap = (t, op, body) =>
         {
-            if (op != KinahParser.ItemStacks) return;
+            if (!KinahParser.Carries(op)) return;
             foreach (var (currency, amount) in KinahParser.Parse(body))
             {
                 var change = last.TryGetValue(currency, out var before) ? $"{amount - before:+#,0;-#,0;0}" : "";

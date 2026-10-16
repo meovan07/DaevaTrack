@@ -46,6 +46,7 @@ public partial class App : Application
     private HistoryWindow? _history;
     private SettingsWindow? _settingsWindow;
     private BossTimersWindow? _timersWindow;
+    private KinahWindow? _kinahWindow;
     private readonly Dictionary<object, BreakdownWindow> _breakdowns = new();
     private int _ticks;
 
@@ -203,12 +204,30 @@ public partial class App : Application
         _meter.Tick();
         UpdateAutoVisibility();
         if (_overlay.IsVisible) _overlay.Refresh();
+        _kinahWindow?.Refresh();
         if (++_ticks % 5 == 0)
         {
+            SyncKinahWindow();
             _tray?.Update(_overlay.IsVisible, _meter.Settings.ClickThrough, _meter.DemoRunning ? "demo" : _meter.CaptureStatus.Message);
             CheckBossAlerts();
             CheckGameStart();
             CheckPendingUpdate();
+        }
+    }
+
+    /// <summary>DaevaTrack: the Kinah window is up exactly while economy tracking is switched on in the settings.</summary>
+    private void SyncKinahWindow()
+    {
+        var on = _meter.Settings.EconomyTracking;
+        if (on && _kinahWindow is null)
+        {
+            _kinahWindow = new KinahWindow(_meter);
+            _kinahWindow.Show();
+        }
+        else if (!on && _kinahWindow is not null)
+        {
+            _kinahWindow.Close();
+            _kinahWindow = null;
         }
     }
 

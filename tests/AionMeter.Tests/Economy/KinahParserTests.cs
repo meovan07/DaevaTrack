@@ -35,6 +35,19 @@ public class KinahParserTests
     }
 
     [Fact]
+    public void LoginInventory_BothBalances()
+    {
+        // Cut from the 9.6 KB 11 56 at login: unbound 12,974,510 among other stacks, later bound 325,400.
+        var body = Wire.FromHex(
+            "0000000000000000 0100 465c1400 00310100 3f337037 aef9c50000000000 01000000000000000000000000000000" +
+            "0100 8ec11500 00920000 4482f71d 0d00000000000000 0000" +
+            "0100 1feb1800 00100000 21337037 18f7040000000000 0101000000000000000000000000000000");
+        Assert.Equal(
+            [new CurrencyBalance(Currency.Kinah, 12_974_510), new CurrencyBalance(Currency.BoundKinah, 325_400)],
+            KinahParser.Parse(body));
+    }
+
+    [Fact]
     public void OtherItems_NoKinah() =>
         Assert.Empty(KinahParser.Parse(Wire.FromHex("01 0100 00000000 00270100 4482f71d 0d00000000000000 00")));
 }

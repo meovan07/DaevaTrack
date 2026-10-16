@@ -41,6 +41,14 @@ public sealed class PacketParser
         OpcodeCounts[opcode] = OpcodeCounts.GetValueOrDefault(opcode) + 1;
         Tap?.Invoke(TimeMs, opcode, body);
 
+        // DaevaTrack: Kinah balances (separate from upstream's switch below).
+        if (Economy.KinahParser.Carries(opcode))
+        {
+            foreach (var (currency, amount) in Economy.KinahParser.Parse(body))
+                _sink(new Economy.KinahEvent(TimeMs, currency, amount));
+            return;
+        }
+
         switch (opcode)
         {
             case Opcodes.Heartbeat:

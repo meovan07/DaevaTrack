@@ -79,6 +79,8 @@ public sealed class MeterService : IDisposable
     public CombatTracker Tracker { get; }
     public HistoryStore History { get; }
     public BossTimers Timers { get; }
+    /// <summary>DaevaTrack: Kinah balances, filled only while economy tracking is on.</summary>
+    public KinahBalances Kinah { get; } = new();
     /// <summary>New versions on GitHub; checks only run once the app calls <see cref="Updater.Start"/>.</summary>
     public Updater Updates { get; }
     public Func<GameData, IEventSource>? CaptureFactory { get; }
@@ -102,23 +104,34 @@ public sealed class MeterService : IDisposable
         _replay?.Dispose();
         Tracker.Reset();
         _replaying = true;
-        if (_capture is not null) _capture.EventDecoded -= Tracker.Process;
+        if (_capture is not null) _capture.EventDecoded -= Dispatch;
 
         var replay = new PcapReplaySource(Data, path, realtime: false);
-        replay.EventDecoded += Tracker.Process;
+        replay.EventDecoded += Dispatch;
         replay.StatusChanged += s =>
         {
             if (s.State != CaptureState.Stopped) return;
             Tracker.Tick(Tracker.LastEventMs + 3_600_000); // close the recording's last fight
             _savedNamesVersion = Tracker.CacheVersion; // names from a recording must not overwrite the live cache
             _replaying = false;
-            if (_capture is not null) _capture.EventDecoded += Tracker.Process;
+            if (_capture is not null) _capture.EventDecoded += Dispatch;
         };
         _replay = replay;
         replay.Start();
     }
 
     private volatile bool _replaying;
+
+    /// <summary>Combat events to the tracker; DaevaTrack's Kinah balances (live only, when switched on) to <see cref="Kinah"/>.</summary>
+    private void Dispatch(Core.Events.GameEvent e)
+    {
+        if (e is Core.Economy.KinahEvent k)
+        {
+            if (Settings.EconomyTracking && !_replaying) Kinah.On(k);
+            return;
+        }
+        Tracker.Process(e);
+    }
 
     private readonly object _captureGate = new();
     private volatile bool _restarting;
@@ -131,7 +144,7 @@ public sealed class MeterService : IDisposable
             try
             {
                 _capture = CaptureFactory(Data);
-                _capture.EventDecoded += Tracker.Process;
+                _capture.EventDecoded += Dispatch;
                 _capture.Start();
             }
             catch (Exception ex)
