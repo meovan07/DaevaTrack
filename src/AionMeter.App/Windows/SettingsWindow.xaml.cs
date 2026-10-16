@@ -44,6 +44,7 @@ public partial class SettingsWindow : Window
         HistoryMin.Text = s.HistoryMinSeconds.ToString();
         HistoryInfo.Text = string.Format(T.HistoryInfo, _meter.History.List().Count, _meter.History.Directory);
         Record.IsChecked = s.RecordPackets;
+        EconomyBox.IsChecked = s.EconomyTracking;
         HkToggle.Text = s.HotkeyToggleOverlay;
         HkReset.Text = s.HotkeyReset;
         HkClick.Text = s.HotkeyClickThrough;
@@ -102,6 +103,7 @@ public partial class SettingsWindow : Window
         if (device != s.CaptureDevice || (Record.IsChecked == true) != s.RecordPackets) captureChanged = true;
         s.CaptureDevice = device;
         s.RecordPackets = Record.IsChecked == true;
+        s.EconomyTracking = EconomyBox.IsChecked == true;
 
         var language = (LanguageBox.SelectedItem as ComboBoxItem)?.Tag as string ?? "en";
         s.DownloadIcons = Icons.IsChecked == true;

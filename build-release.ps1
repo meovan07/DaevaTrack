@@ -1,8 +1,8 @@
 # Builds the downloads for players:
-#   dist\AION2DpsMeter-Setup-v<version>.exe    - installer: shortcuts, uninstall, Npcap check (needs Inno Setup 7)
-#   dist\AION2DpsMeter-v<version>-win-x64.zip  - the same program without installation (no .NET install needed)
-#   dist\AION2DpsMeter-v<version>-source.zip   - the source code (GPL-3.0: hand it out alongside the program)
-#   dist\AION2DpsMeter-Setup.exe, dist\AION2DpsMeter-win-x64.zip - copies under names that never change, for links
+#   dist\DaevaTrack-Setup-v<version>.exe    - installer: shortcuts, uninstall, Npcap check (needs Inno Setup 7)
+#   dist\DaevaTrack-v<version>-win-x64.zip  - the same program without installation (no .NET install needed)
+#   dist\DaevaTrack-v<version>-source.zip   - the source code (GPL-3.0: hand it out alongside the program)
+#   dist\DaevaTrack-Setup.exe, dist\DaevaTrack-win-x64.zip - copies under names that never change, for links
 #   that always give the newest version (releases/latest/download/<name>)
 # Packet recordings (captures\) and build output never go into any of them.
 param([string]$Version = "")
@@ -71,7 +71,7 @@ if (-not $Version) {
     $Version = (Select-Xml -Path $project -XPath "//Version").Node.InnerText | Select-Object -First 1
 }
 $dist = Join-Path $root "dist"
-$name = "AION2DpsMeter-v$Version-win-x64"
+$name = "DaevaTrack-v$Version-win-x64"
 $stage = Join-Path $dist $name
 New-Item -ItemType Directory -Force $dist | Out-Null
 if (Test-Path $stage) { Remove-Item $stage -Recurse -Force }
@@ -91,7 +91,7 @@ if (-not (Test-Path (Join-Path $stage "data\npcs\en.json"))) { throw "data folde
 
 $programZip = Join-Path $dist "$name.zip"
 New-Zip $stage $programZip
-$stableZip = Join-Path $dist "AION2DpsMeter-win-x64.zip" # the never-changing name, as for the installer below
+$stableZip = Join-Path $dist "DaevaTrack-win-x64.zip" # the never-changing name, as for the installer below
 Copy-Item $programZip $stableZip -Force
 $outputs = @($programZip, $stableZip)
 
@@ -106,14 +106,14 @@ if ($iscc) {
     Copy-Item (Join-Path $root "LICENSE"), (Join-Path $root "INSTALL.txt") $setupStage
     if (-not (Test-Path (Join-Path $setupStage "data\npcs\en.json"))) { throw "data folder missing from the installer publish" }
 
-    & $iscc /Qp "/DAppVer=$Version" "/DPayloadDir=$setupStage" "/O$dist" (Join-Path $root "installer\AION2DpsMeter.iss")
+    & $iscc /Qp "/DAppVer=$Version" "/DPayloadDir=$setupStage" "/O$dist" (Join-Path $root "installer\DaevaTrack.iss")
     if ($LASTEXITCODE -ne 0) { throw "Inno Setup failed" }
     Remove-Item $setupStage -Recurse -Force
-    $setupExe = Join-Path $dist "AION2DpsMeter-Setup-v$Version.exe"
+    $setupExe = Join-Path $dist "DaevaTrack-Setup-v$Version.exe"
     Repair-VersionStrings $setupExe "AION2 DPS Meter"
     # Same file under a name that never changes: the download page links to
-    # releases/latest/download/AION2DpsMeter-Setup.exe and always gets the newest version.
-    $stableSetup = Join-Path $dist "AION2DpsMeter-Setup.exe"
+    # releases/latest/download/DaevaTrack-Setup.exe and always gets the newest version.
+    $stableSetup = Join-Path $dist "DaevaTrack-Setup.exe"
     Copy-Item $setupExe $stableSetup -Force
     $outputs = @($setupExe, $stableSetup) + $outputs
 }
@@ -122,7 +122,7 @@ else {
 }
 
 # Source: everything tracked by the project, without recordings, build output or local tooling.
-$sourceStage = Join-Path $dist "AION2DpsMeter-v$Version-source"
+$sourceStage = Join-Path $dist "DaevaTrack-v$Version-source"
 if (Test-Path $sourceStage) { Remove-Item $sourceStage -Recurse -Force }
 $skip = '\\(bin|obj|captures|dist|site-kit|\.git|\.vs|\.claude|TestResults)(\\|$)'
 Get-ChildItem $root -Recurse -File |

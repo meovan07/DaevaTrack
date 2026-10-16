@@ -28,6 +28,8 @@ return args.FirstOrDefault() switch
     "fieldbosses" when args.Length > 1 => FieldBosses(args[1]),
     "hex" when args.Length > 2 => HexDump(args[1], Convert.ToUInt16(args[2], 16), args.Length > 3 ? int.Parse(args[3]) : 5),
     "update-check" => UpdateCheck(args.Skip(1).ToArray()),
+    "findnum" when args.Length > 2 => EconomyCommands.FindNumbers(data, args[1], args.Skip(2)),
+    "economy-dump" when args.Length > 1 => EconomyCommands.Dump(data, args[1], args.Skip(2).ToArray()),
     _ => Usage(),
 };
 
@@ -43,6 +45,9 @@ int Usage()
         aionmeter-cli crits <file.pcap>             damage-type / modifier statistics per class (crit check)
         aionmeter-cli entities <file.pcap>          damage dealers that are not announced players, by spawn kind
         aionmeter-cli casts <file.pcap>             tie ownerless skill effects to the casts that made them
+        aionmeter-cli findnum <file.pcap> <number>...  packets holding a known amount (i64, u32/i32, varint, zigzag)
+        aionmeter-cli economy-dump <file.pcap> [HH:mm:ss [seconds]] [--all]
+                                                    packets the meter does not decode, around a noted time
         aionmeter-cli update-check [--pretend 0.0.1] [--download <dir>]
                                                     what the meter's update check sees on GitHub; download + verify the installer
         """);

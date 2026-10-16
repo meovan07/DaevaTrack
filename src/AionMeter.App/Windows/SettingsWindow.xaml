@@ -177,6 +177,16 @@
                         </StackPanel>
                     </Border>
 
+                    <!-- Economy (DaevaTrack) -->
+                    <Border Style="{StaticResource Section}">
+                        <StackPanel>
+                            <TextBlock Text="{Binding SecEconomy, Source={x:Static s:UiText.Current}}" Style="{StaticResource SectionLabel}" Margin="0,0,0,8" />
+                            <CheckBox x:Name="EconomyBox" Style="{StaticResource DarkCheck}"
+                                      Content="{Binding EconomyTracking, Source={x:Static s:UiText.Current}}" />
+                            <TextBlock Style="{StaticResource Hint}" Text="{Binding EconomyHint, Source={x:Static s:UiText.Current}}" />
+                        </StackPanel>
+                    </Border>
+
                     <!-- Hotkeys -->
                     <Border Style="{StaticResource Section}">
                         <StackPanel>

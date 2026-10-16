@@ -24,7 +24,7 @@ public sealed record ReleaseAsset(string Name, long Size, string Url, string? Sh
 /// </summary>
 public sealed class UpdateFeed : IDisposable
 {
-    public const string Repository = "cyberbadger6969/aion2-dps-meter";
+    public const string Repository = "__FORK_OWNER__/DaevaTrack"; // DaevaTrack: the fork's releases, never upstream's
     public const string LatestReleaseApi = "https://api.github.com/repos/" + Repository + "/releases/latest";
     public const string ReleasesPage = "https://github.com/" + Repository + "/releases/latest";
 

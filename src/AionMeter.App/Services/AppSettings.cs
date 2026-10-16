@@ -15,7 +15,7 @@ public enum HistoryMode
 public sealed class AppSettings
 {
     public static string AppDataDir { get; } =
-        Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "AionMeter");
+        Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "DaevaTrack");
 
     private static string FilePath => Path.Combine(AppDataDir, "settings.json");
 
@@ -80,6 +80,9 @@ public sealed class AppSettings
     public int HistoryMinSeconds { get; set; } = 20;
     public bool RecordPackets { get; set; }
     public string? CaptureDevice { get; set; }
+
+    // DaevaTrack: every economy feature sits behind this switch; off = behaves exactly like upstream.
+    public bool EconomyTracking { get; set; }
 
     // Hotkeys (modifier+key, parsed by HotkeyManager)
     public string HotkeyToggleOverlay { get; set; } = "Ctrl+Shift+D";

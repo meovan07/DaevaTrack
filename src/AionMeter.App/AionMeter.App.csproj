@@ -11,10 +11,10 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
     <UseWindowsForms>true</UseWindowsForms>
-    <AssemblyName>AION2DpsMeter</AssemblyName>
+    <AssemblyName>DaevaTrack</AssemblyName>
     <RootNamespace>AionMeter.App</RootNamespace>
-    <Product>AION2 DPS Meter</Product>
-    <AssemblyTitle>AION2 DPS Meter</AssemblyTitle>
+    <Product>DaevaTrack</Product>
+    <AssemblyTitle>DaevaTrack</AssemblyTitle>
     <ApplicationIcon>Assets\app.ico</ApplicationIcon>
     <Version>0.2.8</Version>
     <ApplicationManifest>app.manifest</ApplicationManifest>
