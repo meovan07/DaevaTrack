@@ -50,6 +50,18 @@ Unbound Kinah 12,974,304 → 12,974,416 → 12,974,478 (two sales). Each sale: a
 | `37703321` | Bound Kinah |
 | `37703337` | unknown, 333,946 after an achievement claim |
 
+## Test 5 — deposit 1,000 Kinah into server storage (2026-10-16)
+
+Storage 0 → 1,000. One `1b 56` with two entries, **both item id `3770333F`**: the bag (9,441) and the storage
+(1,000). They differ only in the byte right after the amount: **`01` = character's bag, `02` = server storage**.
+`43 56` (len 24) arrives with it and also carries 1,000 plus `02` (looks like a "moved to storage" notice).
+
+## Characters and timing
+
+- Kinah and bound Kinah are per character; server storage is per account.
+- On every map load `11 56` (full inventory) arrives ~5–8 s **before** `SelfInfo`, so its balances belong to the
+  character named next. The app holds them until then.
+
 ## Parser
 
 `src/AionMeter.Core/Economy/KinahParser.cs` reads both Kinah balances from `1b 56`; `aionmeter-cli kinah <pcap>`
