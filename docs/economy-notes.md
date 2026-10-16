@@ -55,6 +55,11 @@ Unbound Kinah 12,974,304 → 12,974,416 → 12,974,478 (two sales). Each sale: a
 `src/AionMeter.Core/Economy/KinahParser.cs` reads both Kinah balances from `1b 56`; `aionmeter-cli kinah <pcap>`
 prints them over a recording. Checked against all three recordings above: every balance matches what was seen in game.
 
+## Test 4 — normal play, ~3 minutes (2026-10-16)
+
+User reported bound 348,000 → 331,000 → 325,400 and unbound 12,974,478 → 12,974,510 while playing. `kinah` printed
+every one of them, plus two in-between bound spends the user didn't report (328,000 and 327,400). No false matches.
+
 ## Open questions
 
 - Is the starting balance sent on login or character switch (so the tracker knows the total without waiting for a change)?
