@@ -30,6 +30,7 @@ return args.FirstOrDefault() switch
     "update-check" => UpdateCheck(args.Skip(1).ToArray()),
     "findnum" when args.Length > 2 => EconomyCommands.FindNumbers(data, args[1], args.Skip(2)),
     "economy-dump" when args.Length > 1 => EconomyCommands.Dump(data, args[1], args.Skip(2).ToArray()),
+    "kinah" when args.Length > 1 => EconomyCommands.Kinah(data, args[1]),
     _ => Usage(),
 };
 
@@ -48,6 +49,7 @@ int Usage()
         aionmeter-cli findnum <file.pcap> <number>...  packets holding a known amount (i64, u32/i32, varint, zigzag)
         aionmeter-cli economy-dump <file.pcap> [HH:mm:ss [seconds]] [--all]
                                                     packets the meter does not decode, around a noted time
+        aionmeter-cli kinah <file.pcap>             Kinah and bound Kinah balances as the server sent them
         aionmeter-cli update-check [--pretend 0.0.1] [--download <dir>]
                                                     what the meter's update check sees on GitHub; download + verify the installer
         """);

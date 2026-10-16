@@ -106,4 +106,23 @@ static class EconomyCommands
         foreach (var (op, n) in counts.OrderByDescending(x => x.Value)) Console.WriteLine($"   {Opcodes.Name(op),-12} {n}");
         return 0;
     }
+
+    /// <summary><c>kinah &lt;file.pcap&gt;</c>: every Kinah balance in a recording, with the change since the last one.</summary>
+    public static int Kinah(GameData data, string path)
+    {
+        var last = new Dictionary<Currency, long>();
+        var replay = new PcapReplaySource(data, path, realtime: false);
+        replay.Pipeline.Parser.Tap = (t, op, body) =>
+        {
+            if (op != KinahParser.ItemStacks) return;
+            foreach (var (currency, amount) in KinahParser.Parse(body))
+            {
+                var change = last.TryGetValue(currency, out var before) ? $"{amount - before:+#,0;-#,0;0}" : "";
+                last[currency] = amount;
+                Console.WriteLine($"{Clock(t)} {currency,-10} {amount,16:#,0} {change}");
+            }
+        };
+        replay.RunToEnd();
+        return 0;
+    }
 }
